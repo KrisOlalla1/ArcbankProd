@@ -7,15 +7,40 @@ networks:
 services:
 
   # ==========================================
-  # 0. API GATEWAY ARCBANK (Puerto 4080)
+  # NGINX REVERSE PROXY (SSL Terminator)
+  # ==========================================
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: nginx-proxy-arcbank
+    ports:
+      - "443:443" # HTTPS Web
+      - "8443:8443" # HTTPS Cajero
+      - "80:80" # Redirección HTTP → HTTPS
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+      - ./nginx/certbot:/var/www/certbot:ro
+    depends_on:
+      - frontend-web-arcbank
+      - frontend-cajero-arcbank
+      - api-gateway-arcbank
+    networks:
+      - arcbank-prod-net
+    restart: always
+
+  # ==========================================
+  # 0. API GATEWAY ARCBANK (Puerto 4080 - Solo interno)
   # ==========================================
   api-gateway-arcbank:
     build:
       context: ./api-gateway
       dockerfile: Dockerfile
     container_name: api-gateway-arcbank2
-    ports:
-      - "4080:8080"
+    # Puerto solo expuesto internamente, Nginx hace el proxy
+    # ports:
+    #   - "4080:8080"
+    expose:
+      - "8080"
     depends_on:
       - micro-clientes-arcbank
       - micro-cuentas-arcbank
@@ -159,36 +184,38 @@ services:
       - arcbank-prod-net
 
   # ==========================================
-  # 4. FRONTEND WEB ARCBANK (Puerto 4000)
+  # 4. FRONTEND WEB ARCBANK (Accesible solo via Nginx)
   # ==========================================
   frontend-web-arcbank:
     build:
       context: ./frontendWeb
       dockerfile: Dockerfile
       args:
-        # Se pasará al build: REACT_APP_API_BASE_URL=http://<IP_VM_ARCBANK>:4080 (Ojo: 4080 es el gateway de Arcbank)
-        REACT_APP_API_BASE_URL: ${REACT_APP_API_BASE_URL}
+        # API relativa - Nginx hace el proxy a /api
+        REACT_APP_API_BASE_URL: /api
     container_name: frontend-web-arcbank2
-    ports:
-      - "4000:80"
+    # Puerto interno solo, acceso externo via Nginx HTTPS
+    expose:
+      - "80"
     depends_on:
       - api-gateway-arcbank
     networks:
       - arcbank-prod-net
 
   # ==========================================
-  # 5. FRONTEND CAJERO ARCBANK (Puerto 4001)
+  # 5. FRONTEND CAJERO ARCBANK (Accesible solo via Nginx)
   # ==========================================
   frontend-cajero-arcbank:
     build:
       context: ./frontendCajero
       dockerfile: Dockerfile
       args:
-        # Se pasará al build: VITE_API_BASE_URL=http://<IP_VM_ARCBANK>:4080
-        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+        # API relativa - Nginx hace el proxy a /api
+        VITE_API_BASE_URL: /api
     container_name: frontend-cajero-arcbank2
-    ports:
-      - "4001:80"
+    # Puerto interno solo, acceso externo via Nginx HTTPS
+    expose:
+      - "80"
     depends_on:
       - api-gateway-arcbank
     networks:
