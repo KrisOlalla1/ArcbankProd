@@ -31,6 +31,11 @@ jobs:
             
             # Build with no-cache to ensure fresh images
             sudo docker compose -f docker-compose.prod.yml build --no-cache
-            sudo docker compose -f docker-compose.prod.yml up -d --remove-orphans
+            
+            # Force recreate ALL containers with new images
+            sudo docker compose -f docker-compose.prod.yml up -d --force-recreate --remove-orphans
+            
+            # Restart nginx to ensure config is loaded
+            sudo docker restart nginx-proxy-arcbank || true
             
             echo "✅ ARCBANK Deploy completado: $(date)"
