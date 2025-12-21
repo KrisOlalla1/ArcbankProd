@@ -47,7 +47,7 @@ export default function Login() {
     <div className="login-container">
 
       <div className="left-section">
-        <img src={logo} alt="BANTEC" className="logo" />
+        <h1 style={{ color: '#d4af37', fontSize: '3rem', textAlign: 'center', marginBottom: '20px' }}>ARCBANK</h1>
 
         <div className="login-box">
 

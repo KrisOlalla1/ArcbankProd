@@ -288,7 +288,7 @@ const styles = {
     card: { background: "#fff", padding: 30, borderRadius: 10, width: "100%", maxWidth: "500px", margin: "0 auto", boxShadow: "0 2px 10px rgba(0,0,0,0.05)" },
     title: { fontSize: 22, marginBottom: 20, fontWeight: 700, textAlign: 'center' },
     input: { width: "100%", padding: 12, borderRadius: 6, border: "1px solid #ddd", marginBottom: 15, fontSize: 16 },
-    btn: { background: "#cc8c00", color: "white", padding: "12px 20px", borderRadius: 6, border: "none", cursor: "pointer", marginTop: 10, marginBottom: 10, fontWeight: 600, width: '100%' },
+    btn: { background: "#cc8c00", color: "white", padding: "12px 20px", borderRadius: 6, border: "none", cursor: "pointer", marginTop: 10, fontWeight: 600, width: '100%' },
     btnCancel: { background: "#eee", color: "#333", padding: "12px 20px", borderRadius: 6, border: "none", cursor: "pointer", marginTop: 10, fontWeight: 600, width: '100%' },
     error: { color: "red", marginBottom: 10, fontSize: 14, background: '#ffebee', padding: 8, borderRadius: 4 },
     balanceCircle: { textAlign: "center", marginBottom: 20, padding: 10, background: '#f9f9f9', borderRadius: 8 },

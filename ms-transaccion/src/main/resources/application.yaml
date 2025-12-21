@@ -44,7 +44,7 @@ app:
   
   # Código del banco (para identificarse ante el switch)
   banco:
-    codigo: ${BANCO_CODIGO:BANTEC}
+    codigo: ${BANCO_CODIGO:ARCBANK}
 
 # --- CONFIGURACIÓN SWAGGER / OPENAPI ---
 springdoc:

@@ -61,9 +61,9 @@ public class BancosController {
                 bancos = List.of();
             }
 
-            // Filtrar el banco propio (BANTEC no puede transferir a sí mismo)
+            // Filtrar el banco propio (ARCBANK no puede transferir a sí mismo)
             List<Map<String, Object>> bancosExternos = bancos.stream()
-                    .filter(b -> !"BANTEC".equals(b.get("codigo")))
+                    .filter(b -> !"ARCBANK".equals(b.get("codigo")))
                     .toList();
 
             log.info("Bancos disponibles para transferencia: {}", bancosExternos.size());

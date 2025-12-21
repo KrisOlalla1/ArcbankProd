@@ -20,7 +20,9 @@ export default function Sidebar({ cajero }) {
 
   return (
     <div className="sidebar">
-      <img src={logo} alt="ARC BANK" className="sidebar-logo" />
+      <div className="sidebar-logo">
+        <h2 style={{ color: '#d4af37', textAlign: 'center', margin: 0 }}>ARCBANK</h2>
+      </div>
 
       <div className="sidebar-user">
         <div className="sidebar-user-icon">

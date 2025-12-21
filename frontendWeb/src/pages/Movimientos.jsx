@@ -45,19 +45,13 @@ export default function Movimientos() {
         // Formatear fecha
         let fechaStr = 'Sin fecha'
         if (m.fechaCreacion) {
-          // Asegurar que se trate como UTC si viene sin offset
-          let dateStr = m.fechaCreacion
-          if (!dateStr.endsWith('Z') && !dateStr.includes('+')) {
-            dateStr += 'Z'
-          }
-          const fecha = new Date(dateStr)
-          fechaStr = fecha.toLocaleString('es-EC', {
+          const fecha = new Date(m.fechaCreacion)
+          fechaStr = fecha.toLocaleDateString('es-EC', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric',
             hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
+            minute: '2-digit'
           })
         }
 
