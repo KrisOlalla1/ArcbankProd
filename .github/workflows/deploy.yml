@@ -16,9 +16,21 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command_timeout: 30m
           script: |
+            # Ensure swap exists for builds
+            if [ ! -f /swapfile ]; then
+              sudo fallocate -l 2G /swapfile
+              sudo chmod 600 /swapfile
+              sudo mkswap /swapfile
+              sudo swapon /swapfile
+            fi
+            
             cd ~/ARCBANK
             git pull origin main
-            sudo docker compose -f docker-compose.prod.yml down
-            sudo -E docker compose -f docker-compose.prod.yml up -d --build
+            
+            # Build with no-cache to ensure fresh images
+            sudo docker compose -f docker-compose.prod.yml build --no-cache
+            sudo docker compose -f docker-compose.prod.yml up -d --remove-orphans
+            
             echo "✅ ARCBANK Deploy completado: $(date)"
