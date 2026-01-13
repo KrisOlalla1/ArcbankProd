@@ -132,3 +132,6 @@ curl -X POST http://localhost:8082/api/transacciones \
 ---
 *Este documento fue generado para asegurar la continuidad del desarrollo del proyecto.*
 
+
+
+muy bien flaquita hiciste todo tu solita
